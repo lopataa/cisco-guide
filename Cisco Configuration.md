@@ -79,7 +79,7 @@ When accessing a remote network through another router, you have to configure ne
 ## VLAN & VLANs across multiple switches
 
 1. vlan creation
- - `1`
+ - `vlan`
  - `name VLAN10`
  - `exit`
 
@@ -92,6 +92,7 @@ When accessing a remote network through another router, you have to configure ne
 3. Inter-VLAN
  - `int g0/1` - the interface between the switches
  - `shutdown` - temporarily shut down the interface to avoid errors
+ - (only on L3 switches) `switchport trunk encapsulation dot1q` - enabling encapsulation is required
  - `switchport trunk native vlan 99`
  - `exit`
  
@@ -113,6 +114,49 @@ When accessing a remote network through another router, you have to configure ne
   - `int g0/1`
   - `no switchport`
   *dont forget to set the ip on this port!*
+
+## Spanning-tree protocol (STP)
+
+### Costs (short path cost)
+
+Cost is used to calculate the optimal path when building the spanning tree map.
+
+*in a interface configuration ctx*
+- `spanning tree cost 10`
+
+| speed     | cost |
+|-----------|------|
+| 10 mbps   | 100  |
+| 100 mbps  | 19   |
+| 1 gbps    | 4    |
+| 10 gbps   | 2    |
+| 100 gbps  | 1    |
+
+
+### Priority
+
+
+
+
+### Portfast
+
+On a interface, where no switch or other network device (switch, router etc.) will be connected, you can set the interface to portfast mode, where any STP discovery is not needed and takes a long time.
+
+*in a interface configuration ctx*
+- `spanning-tree portfast`
+
+#### BDPU Guard
+
+This protects a port by checking for bpdu packets, and automatically administratively disables the port, if a network device (switch, router etc.) is connected. 
+
+*in a interface configuration ctx*
+- `spanning-tree bpduguard enable`
+
+## DHCP Server
+
+- `ip dhcp excluded-address <range-from> [range-to]`
+- `ip dhcp <pool-name>`
+- 
 
 ## Access Control List (ACL)
 
