@@ -169,3 +169,21 @@ This protects a port by checking for bpdu packets, and automatically administrat
    - `int vlan 10`
    - `int access-group 110 in`
    - `exit`
+
+
+## HSRP (Cisco Hot Standby Router Protocol)
+
+1. specify the HSRP version
+    - `standby version 2` (two is the latest)
+
+2. set the virtual gateway
+    - `standby <group-number> ip <ip>`
+    - `standby 1 ip 192.168.1.254`
+
+3. set the router's priority, 100's default
+    - `standby 1 priority 150`
+
+4. If it's desirable that the active router resumes its role, when it becomes available again
+    - `standby 1 preempt`
+
+After configuring, make sure devices' default gateway is set to the HSRP ip.
